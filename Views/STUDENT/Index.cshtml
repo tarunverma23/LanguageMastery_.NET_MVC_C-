@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LanguageMastery.Models.STUDENT>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.stu_Fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stu_Lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stu_Contact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stu_email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stu_location)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.stu_Fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stu_Lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stu_Contact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stu_email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stu_location)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.stu_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.stu_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.stu_Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LanguageMasteryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ADMIN">
+          <Key>
+            <PropertyRef Name="adm_Id" />
+          </Key>
+          <Property Name="adm_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adm_Fname" Type="varchar" MaxLength="50" />
+          <Property Name="adm_Lname" Type="varchar" MaxLength="50" />
+          <Property Name="adm_email" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CONTACT_REQUEST">
+          <Key>
+            <PropertyRef Name="req_Id" />
+          </Key>
+          <Property Name="req_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="req_Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="req_Contact" Type="nvarchar" MaxLength="50" />
+          <Property Name="req_Message" Type="nvarchar" MaxLength="50" />
+          <Property Name="req_Location" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="COURSE">
+          <Key>
+            <PropertyRef Name="cr_Id" />
+          </Key>
+          <Property Name="cr_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cr_Name" Type="nchar" MaxLength="10" />
+          <Property Name="cr_Duration" Type="nchar" MaxLength="10" />
+          <Property Name="cr_Start_Date" Type="nchar" MaxLength="10" />
+          <Property Name="cr_fees" Type="nchar" MaxLength="10" />
+          <Property Name="STAFF_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="ENROLMENT">
+          <Key>
+            <PropertyRef Name="en_Id" />
+          </Key>
+          <Property Name="en_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="en_Date" Type="date" />
+          <Property Name="en_End_Date" Type="date" />
+          <Property Name="STU_ID" Type="int" />
+          <Property Name="CR_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="RATING">
+          <Key>
+            <PropertyRef Name="rat_Id" />
+          </Key>
+          <Property Name="rat_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rat_Star" Type="int" />
+          <Property Name="rat_Date" Type="date" />
+          <Property Name="rat_Comment" Type="varchar" MaxLength="50" />
+          <Property Name="STU_ID" Type="int" />
+          <Property Name="CR_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="STAFF">
+          <Key>
+            <PropertyRef Name="staf_Id" />
+          </Key>
+          <Property Name="staf_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="staf_Fname" Type="nchar" MaxLength="10" />
+          <Property Name="staf_Lname" Type="nchar" MaxLength="10" />
+          <Property Name="staf_Contact" Type="nchar" MaxLength="10" />
+          <Property Name="staf_emial" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="STUDENT">
+          <Key>
+            <PropertyRef Name="stu_Id" />
+          </Key>
+          <Property Name="stu_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stu_Fname" Type="varchar" MaxLength="50" />
+          <Property Name="stu_Lname" Type="varchar" MaxLength="50" />
+          <Property Name="stu_Contact" Type="varchar" MaxLength="50" />
+          <Property Name="stu_email" Type="varchar" MaxLength="50" />
+          <Property Name="stu_location" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_COURSE_ToSTAFF">
+          <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STAFF">
+              <PropertyRef Name="staf_Id" />
+            </Principal>
+            <Dependent Role="COURSE">
+              <PropertyRef Name="STAFF_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENROLMENT_ToCOURSE">
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="0..1" />
+          <End Role="ENROLMENT" Type="Self.ENROLMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURSE">
+              <PropertyRef Name="cr_Id" />
+            </Principal>
+            <Dependent Role="ENROLMENT">
+              <PropertyRef Name="CR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENROLMENT_ToSTUDENT">
+          <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="0..1" />
+          <End Role="ENROLMENT" Type="Self.ENROLMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT">
+              <PropertyRef Name="stu_Id" />
+            </Principal>
+            <Dependent Role="ENROLMENT">
+              <PropertyRef Name="STU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RATING_ToCOURSE">
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="0..1" />
+          <End Role="RATING" Type="Self.RATING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURSE">
+              <PropertyRef Name="cr_Id" />
+            </Principal>
+            <Dependent Role="RATING">
+              <PropertyRef Name="CR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RATING_ToSTUDENT">
+          <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="0..1" />
+          <End Role="RATING" Type="Self.RATING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT">
+              <PropertyRef Name="stu_Id" />
+            </Principal>
+            <Dependent Role="RATING">
+              <PropertyRef Name="STU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LanguageMasteryModelStoreContainer">
+          <EntitySet Name="ADMIN" EntityType="Self.ADMIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CONTACT_REQUEST" EntityType="Self.CONTACT_REQUEST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COURSE" EntityType="Self.COURSE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ENROLMENT" EntityType="Self.ENROLMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RATING" EntityType="Self.RATING" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STAFF" EntityType="Self.STAFF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STUDENT" EntityType="Self.STUDENT" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_COURSE_ToSTAFF" Association="Self.FK_COURSE_ToSTAFF">
+            <End Role="STAFF" EntitySet="STAFF" />
+            <End Role="COURSE" EntitySet="COURSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENROLMENT_ToCOURSE" Association="Self.FK_ENROLMENT_ToCOURSE">
+            <End Role="COURSE" EntitySet="COURSE" />
+            <End Role="ENROLMENT" EntitySet="ENROLMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENROLMENT_ToSTUDENT" Association="Self.FK_ENROLMENT_ToSTUDENT">
+            <End Role="STUDENT" EntitySet="STUDENT" />
+            <End Role="ENROLMENT" EntitySet="ENROLMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RATING_ToCOURSE" Association="Self.FK_RATING_ToCOURSE">
+            <End Role="COURSE" EntitySet="COURSE" />
+            <End Role="RATING" EntitySet="RATING" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RATING_ToSTUDENT" Association="Self.FK_RATING_ToSTUDENT">
+            <End Role="STUDENT" EntitySet="STUDENT" />
+            <End Role="RATING" EntitySet="RATING" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LanguageMasteryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ADMIN">
+          <Key>
+            <PropertyRef Name="adm_Id" />
+          </Key>
+          <Property Name="adm_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adm_Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adm_Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adm_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CONTACT_REQUEST">
+          <Key>
+            <PropertyRef Name="req_Id" />
+          </Key>
+          <Property Name="req_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="req_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="req_Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="req_Message" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="req_Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="COURSE">
+          <Key>
+            <PropertyRef Name="cr_Id" />
+          </Key>
+          <Property Name="cr_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cr_Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="cr_Duration" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="cr_Start_Date" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="cr_fees" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="STAFF_ID" Type="Int32" />
+          <NavigationProperty Name="STAFF" Relationship="Self.FK_COURSE_ToSTAFF" FromRole="COURSE" ToRole="STAFF" />
+          <NavigationProperty Name="ENROLMENTs" Relationship="Self.FK_ENROLMENT_ToCOURSE" FromRole="COURSE" ToRole="ENROLMENT" />
+          <NavigationProperty Name="RATINGs" Relationship="Self.FK_RATING_ToCOURSE" FromRole="COURSE" ToRole="RATING" />
+        </EntityType>
+        <EntityType Name="ENROLMENT">
+          <Key>
+            <PropertyRef Name="en_Id" />
+          </Key>
+          <Property Name="en_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="en_Date" Type="DateTime" Precision="0" />
+          <Property Name="en_End_Date" Type="DateTime" Precision="0" />
+          <Property Name="STU_ID" Type="Int32" />
+          <Property Name="CR_ID" Type="Int32" />
+          <NavigationProperty Name="COURSE" Relationship="Self.FK_ENROLMENT_ToCOURSE" FromRole="ENROLMENT" ToRole="COURSE" />
+          <NavigationProperty Name="STUDENT" Relationship="Self.FK_ENROLMENT_ToSTUDENT" FromRole="ENROLMENT" ToRole="STUDENT" />
+        </EntityType>
+        <EntityType Name="RATING">
+          <Key>
+            <PropertyRef Name="rat_Id" />
+          </Key>
+          <Property Name="rat_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rat_Star" Type="Int32" />
+          <Property Name="rat_Date" Type="DateTime" Precision="0" />
+          <Property Name="rat_Comment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="STU_ID" Type="Int32" />
+          <Property Name="CR_ID" Type="Int32" />
+          <NavigationProperty Name="COURSE" Relationship="Self.FK_RATING_ToCOURSE" FromRole="RATING" ToRole="COURSE" />
+          <NavigationProperty Name="STUDENT" Relationship="Self.FK_RATING_ToSTUDENT" FromRole="RATING" ToRole="STUDENT" />
+        </EntityType>
+        <EntityType Name="STAFF">
+          <Key>
+            <PropertyRef Name="staf_Id" />
+          </Key>
+          <Property Name="staf_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="staf_Fname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="staf_Lname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="staf_Contact" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="staf_emial" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="COURSEs" Relationship="Self.FK_COURSE_ToSTAFF" FromRole="STAFF" ToRole="COURSE" />
+        </EntityType>
+        <EntityType Name="STUDENT">
+          <Key>
+            <PropertyRef Name="stu_Id" />
+          </Key>
+          <Property Name="stu_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stu_Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stu_Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stu_Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stu_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stu_location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ENROLMENTs" Relationship="Self.FK_ENROLMENT_ToSTUDENT" FromRole="STUDENT" ToRole="ENROLMENT" />
+          <NavigationProperty Name="RATINGs" Relationship="Self.FK_RATING_ToSTUDENT" FromRole="STUDENT" ToRole="RATING" />
+        </EntityType>
+        <Association Name="FK_COURSE_ToSTAFF">
+          <End Role="STAFF" Type="Self.STAFF" Multiplicity="0..1" />
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STAFF">
+              <PropertyRef Name="staf_Id" />
+            </Principal>
+            <Dependent Role="COURSE">
+              <PropertyRef Name="STAFF_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENROLMENT_ToCOURSE">
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="0..1" />
+          <End Role="ENROLMENT" Type="Self.ENROLMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURSE">
+              <PropertyRef Name="cr_Id" />
+            </Principal>
+            <Dependent Role="ENROLMENT">
+              <PropertyRef Name="CR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RATING_ToCOURSE">
+          <End Role="COURSE" Type="Self.COURSE" Multiplicity="0..1" />
+          <End Role="RATING" Type="Self.RATING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COURSE">
+              <PropertyRef Name="cr_Id" />
+            </Principal>
+            <Dependent Role="RATING">
+              <PropertyRef Name="CR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENROLMENT_ToSTUDENT">
+          <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="0..1" />
+          <End Role="ENROLMENT" Type="Self.ENROLMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT">
+              <PropertyRef Name="stu_Id" />
+            </Principal>
+            <Dependent Role="ENROLMENT">
+              <PropertyRef Name="STU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RATING_ToSTUDENT">
+          <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="0..1" />
+          <End Role="RATING" Type="Self.RATING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT">
+              <PropertyRef Name="stu_Id" />
+            </Principal>
+            <Dependent Role="RATING">
+              <PropertyRef Name="STU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LanguageMasteryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADMINs" EntityType="Self.ADMIN" />
+          <EntitySet Name="CONTACT_REQUEST" EntityType="Self.CONTACT_REQUEST" />
+          <EntitySet Name="COURSEs" EntityType="Self.COURSE" />
+          <EntitySet Name="ENROLMENTs" EntityType="Self.ENROLMENT" />
+          <EntitySet Name="RATINGs" EntityType="Self.RATING" />
+          <EntitySet Name="STAFFs" EntityType="Self.STAFF" />
+          <EntitySet Name="STUDENTs" EntityType="Self.STUDENT" />
+          <AssociationSet Name="FK_COURSE_ToSTAFF" Association="Self.FK_COURSE_ToSTAFF">
+            <End Role="STAFF" EntitySet="STAFFs" />
+            <End Role="COURSE" EntitySet="COURSEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENROLMENT_ToCOURSE" Association="Self.FK_ENROLMENT_ToCOURSE">
+            <End Role="COURSE" EntitySet="COURSEs" />
+            <End Role="ENROLMENT" EntitySet="ENROLMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RATING_ToCOURSE" Association="Self.FK_RATING_ToCOURSE">
+            <End Role="COURSE" EntitySet="COURSEs" />
+            <End Role="RATING" EntitySet="RATINGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENROLMENT_ToSTUDENT" Association="Self.FK_ENROLMENT_ToSTUDENT">
+            <End Role="STUDENT" EntitySet="STUDENTs" />
+            <End Role="ENROLMENT" EntitySet="ENROLMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RATING_ToSTUDENT" Association="Self.FK_RATING_ToSTUDENT">
+            <End Role="STUDENT" EntitySet="STUDENTs" />
+            <End Role="RATING" EntitySet="RATINGs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LanguageMasteryModelStoreContainer" CdmEntityContainer="LanguageMasteryEntities">
+          <EntitySetMapping Name="ADMINs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.ADMIN">
+              <MappingFragment StoreEntitySet="ADMIN">
+                <ScalarProperty Name="adm_Id" ColumnName="adm_Id" />
+                <ScalarProperty Name="adm_Fname" ColumnName="adm_Fname" />
+                <ScalarProperty Name="adm_Lname" ColumnName="adm_Lname" />
+                <ScalarProperty Name="adm_email" ColumnName="adm_email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CONTACT_REQUEST">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.CONTACT_REQUEST">
+              <MappingFragment StoreEntitySet="CONTACT_REQUEST">
+                <ScalarProperty Name="req_Id" ColumnName="req_Id" />
+                <ScalarProperty Name="req_Email" ColumnName="req_Email" />
+                <ScalarProperty Name="req_Contact" ColumnName="req_Contact" />
+                <ScalarProperty Name="req_Message" ColumnName="req_Message" />
+                <ScalarProperty Name="req_Location" ColumnName="req_Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COURSEs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.COURSE">
+              <MappingFragment StoreEntitySet="COURSE">
+                <ScalarProperty Name="cr_Id" ColumnName="cr_Id" />
+                <ScalarProperty Name="cr_Name" ColumnName="cr_Name" />
+                <ScalarProperty Name="cr_Duration" ColumnName="cr_Duration" />
+                <ScalarProperty Name="cr_Start_Date" ColumnName="cr_Start_Date" />
+                <ScalarProperty Name="cr_fees" ColumnName="cr_fees" />
+                <ScalarProperty Name="STAFF_ID" ColumnName="STAFF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ENROLMENTs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.ENROLMENT">
+              <MappingFragment StoreEntitySet="ENROLMENT">
+                <ScalarProperty Name="en_Id" ColumnName="en_Id" />
+                <ScalarProperty Name="en_Date" ColumnName="en_Date" />
+                <ScalarProperty Name="en_End_Date" ColumnName="en_End_Date" />
+                <ScalarProperty Name="STU_ID" ColumnName="STU_ID" />
+                <ScalarProperty Name="CR_ID" ColumnName="CR_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RATINGs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.RATING">
+              <MappingFragment StoreEntitySet="RATING">
+                <ScalarProperty Name="rat_Id" ColumnName="rat_Id" />
+                <ScalarProperty Name="rat_Star" ColumnName="rat_Star" />
+                <ScalarProperty Name="rat_Date" ColumnName="rat_Date" />
+                <ScalarProperty Name="rat_Comment" ColumnName="rat_Comment" />
+                <ScalarProperty Name="STU_ID" ColumnName="STU_ID" />
+                <ScalarProperty Name="CR_ID" ColumnName="CR_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STAFFs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.STAFF">
+              <MappingFragment StoreEntitySet="STAFF">
+                <ScalarProperty Name="staf_Id" ColumnName="staf_Id" />
+                <ScalarProperty Name="staf_Fname" ColumnName="staf_Fname" />
+                <ScalarProperty Name="staf_Lname" ColumnName="staf_Lname" />
+                <ScalarProperty Name="staf_Contact" ColumnName="staf_Contact" />
+                <ScalarProperty Name="staf_emial" ColumnName="staf_emial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STUDENTs">
+            <EntityTypeMapping TypeName="LanguageMasteryModel.STUDENT">
+              <MappingFragment StoreEntitySet="STUDENT">
+                <ScalarProperty Name="stu_Id" ColumnName="stu_Id" />
+                <ScalarProperty Name="stu_Fname" ColumnName="stu_Fname" />
+                <ScalarProperty Name="stu_Lname" ColumnName="stu_Lname" />
+                <ScalarProperty Name="stu_Contact" ColumnName="stu_Contact" />
+                <ScalarProperty Name="stu_email" ColumnName="stu_email" />
+                <ScalarProperty Name="stu_location" ColumnName="stu_location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
